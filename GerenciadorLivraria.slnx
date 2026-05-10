@@ -5,4 +5,5 @@
   <Folder Name="/src/">
     <Project Path="src/GerenciadorLivraria/GerenciadorLivraria.csproj" />
   </Folder>
+  <Folder Name="/tests/" />
 </Solution>
