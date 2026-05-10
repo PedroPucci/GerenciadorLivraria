@@ -9,6 +9,7 @@
     <Project Path="src/GerenciadorLivraria/GerenciadorLivraria.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="GerenciadorLivraria.BddTests/GerenciadorLivraria.BddTests.csproj" Id="cabcbf5a-ac43-46ec-8517-bb6f2d1e8892" />
     <Project Path="tests/GerenciadorLivraria.Tests/GerenciadorLivraria.Tests.csproj" />
   </Folder>
 </Solution>
