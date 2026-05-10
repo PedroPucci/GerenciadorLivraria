@@ -3,8 +3,12 @@
     <File Path="../../../../Downloads/desafio-tecnico-livraria.pdf" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="GerenciadorLivraria.Application/GerenciadorLivraria.Application.csproj" Id="95657e06-008b-4b72-ba35-e0e799360ce8" />
+    <Project Path="GerenciadorLivraria.Domain/GerenciadorLivraria.Domain.csproj" Id="0397fba7-a88e-4e39-ae07-467c8d7f86bb" />
+    <Project Path="GerenciadorLivraria.Infrastructure/GerenciadorLivraria.Infrastructure.csproj" Id="b0f330d1-df4f-409f-9108-d8638259b7d3" />
     <Project Path="src/GerenciadorLivraria/GerenciadorLivraria.csproj" />
   </Folder>
-  <Folder Name="/tests/" />
-  <Project Path="tests/GerenciadorLivraria.Tests/GerenciadorLivraria.Tests.csproj" />
+  <Folder Name="/tests/">
+    <Project Path="tests/GerenciadorLivraria.Tests/GerenciadorLivraria.Tests.csproj" />
+  </Folder>
 </Solution>
