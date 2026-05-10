@@ -1,3 +1,8 @@
 <Solution>
-  <Project Path="GerenciadorLivraria/GerenciadorLivraria.csproj" />
+  <Folder Name="/docs/">
+    <File Path="../../../../Downloads/desafio-tecnico-livraria.pdf" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="GerenciadorLivraria/GerenciadorLivraria.csproj" />
+  </Folder>
 </Solution>
