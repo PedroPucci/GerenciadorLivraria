@@ -5,5 +5,7 @@
   <Folder Name="/src/">
     <Project Path="src/GerenciadorLivraria/GerenciadorLivraria.csproj" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="GerenciadorLivraria.Tests/GerenciadorLivraria.Tests.csproj" Id="3992a8ce-bbf4-4b09-8f20-b129be8969c6" />
+  </Folder>
 </Solution>
