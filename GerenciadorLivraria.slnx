@@ -3,6 +3,6 @@
     <File Path="../../../../Downloads/desafio-tecnico-livraria.pdf" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="GerenciadorLivraria/GerenciadorLivraria.csproj" />
+    <Project Path="src/GerenciadorLivraria/GerenciadorLivraria.csproj" />
   </Folder>
 </Solution>
