@@ -1,5 +1,6 @@
 using GerenciadorLivraria.Extensions;
 using GerenciadorLivraria.Extensions.ExtensionsLogs;
+using GerenciadorLivraria.Infrastructure.Connections;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,8 +52,8 @@ if (runMigrations)
 
     try
     {
-        //var context = services.GetRequiredService<DataContext>();
-        //context.Database.Migrate();
+        var context = services.GetRequiredService<DataContext>();
+        context.Database.Migrate();
     }
     catch (Exception ex)
     {

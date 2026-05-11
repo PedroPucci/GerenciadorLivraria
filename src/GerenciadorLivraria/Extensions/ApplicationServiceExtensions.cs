@@ -1,4 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using GerenciadorLivraria.Application.UnitOfWork;
+using GerenciadorLivraria.Domain.Entities;
+using GerenciadorLivraria.Extensions.SwaggerDocumentation;
+using GerenciadorLivraria.Infrastructure.Connections;
+using GerenciadorLivraria.Infrastructure.Repository;
+using GerenciadorLivraria.Infrastructure.Repository.Interfaces;
+using GerenciadorLivraria.Infrastructure.Repository.RepositoryUoW;
+using GerenciadorLivraria.Shared.Identity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,22 +30,23 @@ namespace GerenciadorLivraria.Extensions
             var audience = jwtSettings["Audience"];
             var secretKey = jwtSettings["SecretKey"];
 
-            //services.AddDbContext<DataContext>(opt =>
-            //{
-            //    opt.UseSqlServer(config.GetConnectionString("WebApiDatabase"));
-            //});
+            services.AddDbContext<DataContext>(opt =>
+            {
+                opt.UseSqlServer(config.GetConnectionString("WebApiDatabase"));
+            });
 
-            //services.AddIdentity<UserEntity, ProfileEntity>(o =>
-            //{
-            //    o.Password.RequireDigit = true;
-            //    o.Password.RequireLowercase = true;
-            //    o.Password.RequireUppercase = true;
-            //    o.Password.RequireNonAlphanumeric = true;
-            //    o.Password.RequiredLength = 10;
-            //    o.User.RequireUniqueEmail = true;
-            //})
-            //.AddEntityFrameworkStores<DataContext>()
-            //.AddDefaultTokenProviders();
+            services.AddIdentity<UserEntity, ProfileEntity>(o =>
+            {
+                o.Password.RequireDigit = true;
+                o.Password.RequireLowercase = true;
+                o.Password.RequireUppercase = true;
+                o.Password.RequireNonAlphanumeric = true;
+                o.Password.RequiredLength = 10;
+                o.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<DataContext>()
+            .AddDefaultTokenProviders()
+            .AddErrorDescriber<CustomIdentityErrorDescriber>();
 
             services.AddAuthentication(opt =>
             {
@@ -118,7 +127,7 @@ namespace GerenciadorLivraria.Extensions
                     "
                 });
 
-                //opt.OperationFilter<CustomOperationDescriptions>();
+                opt.OperationFilter<CustomOperationDescriptions>();
 
                 opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -162,15 +171,9 @@ namespace GerenciadorLivraria.Extensions
                 });
             });
 
-            //services.AddScoped<IRepositoryUoW, RepositoryUoW>();
-            //services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
-            //services.AddScoped<IUserRepository, UserRepository>();
-
-            //services.AddScoped<IGameService, GameService>();
-            //services.AddScoped<IUserService, UserService>();
-
-            //services.AddScoped<GameService>();
-            //services.AddScoped<UserService>();
+            services.AddScoped<IRepositoryUoW, RepositoryUoW>();
+            services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<AuthenticationService>();
 
             services.AddMvc().AddJsonOptions(options =>

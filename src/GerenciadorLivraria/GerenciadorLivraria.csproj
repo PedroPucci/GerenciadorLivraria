@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\GerenciadorLivraria.Application\GerenciadorLivraria.Application.csproj" />
   </ItemGroup>
 
 </Project>
