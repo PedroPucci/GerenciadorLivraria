@@ -29,4 +29,12 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GerenciadorLivraria.Domain\GerenciadorLivraria.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>
