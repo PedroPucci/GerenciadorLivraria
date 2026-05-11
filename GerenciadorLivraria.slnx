@@ -3,14 +3,14 @@
     <File Path="../../../../Downloads/desafio-tecnico-livraria.pdf" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="GerenciadorLivraria.Application/GerenciadorLivraria.Application.csproj" Id="95657e06-008b-4b72-ba35-e0e799360ce8" />
-    <Project Path="GerenciadorLivraria.Domain/GerenciadorLivraria.Domain.csproj" Id="0397fba7-a88e-4e39-ae07-467c8d7f86bb" />
-    <Project Path="GerenciadorLivraria.Infrastructure/GerenciadorLivraria.Infrastructure.csproj" Id="b0f330d1-df4f-409f-9108-d8638259b7d3" />
-    <Project Path="GerenciadorLivraria.Shared/GerenciadorLivraria.Shared.csproj" Id="c568629d-950f-4175-8baa-1a3e0f5029a1" />
+    <Project Path="src/GerenciadorLivraria.Application/GerenciadorLivraria.Application.csproj" />
+    <Project Path="src/GerenciadorLivraria.Domain/GerenciadorLivraria.Domain.csproj" />
+    <Project Path="src/GerenciadorLivraria.Infrastructure/GerenciadorLivraria.Infrastructure.csproj" />
+    <Project Path="src/GerenciadorLivraria.Shared/GerenciadorLivraria.Shared.csproj" />
     <Project Path="src/GerenciadorLivraria/GerenciadorLivraria.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="GerenciadorLivraria.BddTests/GerenciadorLivraria.BddTests.csproj" Id="cabcbf5a-ac43-46ec-8517-bb6f2d1e8892" />
-    <Project Path="tests/GerenciadorLivraria.Tests/GerenciadorLivraria.UnitTests.csproj" />
+    <Project Path="tests/GerenciadorLivraria.BddTests/GerenciadorLivraria.BddTests.csproj" />
+    <Project Path="tests/GerenciadorLivraria.UnitTests/GerenciadorLivraria.UnitTests.csproj" />
   </Folder>
 </Solution>
