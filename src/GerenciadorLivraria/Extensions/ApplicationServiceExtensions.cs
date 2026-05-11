@@ -112,7 +112,8 @@ namespace GerenciadorLivraria.Extensions
                     Title = "API GerenciadorLivraria",
                     Description = @"
                         A API GerenciadorLivraria é uma solução moderna para gerenciamento de livros de uma livraria.
-                        Desenvolvida em .NET 8, a aplicação permite realizar operações de cadastro, consulta, atualização e remoção de livros, seguindo boas práticas de arquitetura e desenvolvimento.
+                        Desenvolvida em .NET 8, a aplicação permite realizar operações de cadastro, consulta, atualização e remoção de livros, 
+                        seguindo boas práticas de arquitetura e desenvolvimento.
 
                         Principais Recursos:
                         - CRUD completo de livros.
