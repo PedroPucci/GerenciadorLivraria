@@ -30,4 +30,10 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\GerenciadorLivraria.Application\GerenciadorLivraria.Application.csproj" />
+    <ProjectReference Include="..\..\src\GerenciadorLivraria.Domain\GerenciadorLivraria.Domain.csproj" />
+    <ProjectReference Include="..\..\src\GerenciadorLivraria.Infrastructure\GerenciadorLivraria.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

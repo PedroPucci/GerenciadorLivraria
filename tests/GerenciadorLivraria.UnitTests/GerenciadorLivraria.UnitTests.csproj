@@ -37,6 +37,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\GerenciadorLivraria.Application\GerenciadorLivraria.Application.csproj" />
+    <ProjectReference Include="..\..\src\GerenciadorLivraria.Infrastructure\GerenciadorLivraria.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
