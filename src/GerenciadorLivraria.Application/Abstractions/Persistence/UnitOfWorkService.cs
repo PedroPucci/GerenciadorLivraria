@@ -3,7 +3,7 @@ using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Infrastructure.Repository.RepositoryUoW;
 using Microsoft.AspNetCore.Identity;
 
-namespace GerenciadorLivraria.Application.UnitOfWork
+namespace GerenciadorLivraria.Application.Abstractions.Persistence
 {
     public class UnitOfWorkService : IUnitOfWorkService
     {

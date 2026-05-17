@@ -33,9 +33,4 @@
     <ProjectReference Include="..\GerenciadorLivraria.Domain\GerenciadorLivraria.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DomainErrors\" />
-    <Folder Include="Helpers\" />
-  </ItemGroup>
-
 </Project>

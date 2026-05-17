@@ -1,4 +1,4 @@
-﻿using GerenciadorLivraria.Application.UnitOfWork;
+﻿using GerenciadorLivraria.Application.Abstractions.Persistence;
 using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Extensions.SwaggerDocumentation;
 using GerenciadorLivraria.Infrastructure.Connections;

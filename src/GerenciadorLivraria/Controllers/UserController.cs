@@ -1,5 +1,5 @@
-﻿using GerenciadorLivraria.Application.Dto;
-using GerenciadorLivraria.Application.UnitOfWork;
+﻿using GerenciadorLivraria.Application.Abstractions.Persistence;
+using GerenciadorLivraria.Application.Dto;
 using GerenciadorLivraria.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

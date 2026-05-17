@@ -1,7 +1,7 @@
 ﻿using GerenciadorLivraria.Application.Services;
 
 
-namespace GerenciadorLivraria.Application.UnitOfWork
+namespace GerenciadorLivraria.Application.Abstractions.Persistence
 {
     public interface IUnitOfWorkService
     {

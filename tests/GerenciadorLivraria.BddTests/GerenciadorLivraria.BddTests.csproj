@@ -36,4 +36,9 @@
     <ProjectReference Include="..\..\src\GerenciadorLivraria.Infrastructure\GerenciadorLivraria.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\" />
+    <Folder Include="Steps\" />
+  </ItemGroup>
+
 </Project>
