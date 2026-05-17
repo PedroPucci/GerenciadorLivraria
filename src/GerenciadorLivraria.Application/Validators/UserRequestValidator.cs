@@ -5,7 +5,7 @@ using GerenciadorLivraria.Shared.Helpers;
 
 namespace GerenciadorLivraria.Application.Validators
 {
-    public class UserRequestValidator : AbstractValidator<UserResponseDto>
+    public class UserRequestValidator : AbstractValidator<CreateUserRequestDto>
     {
         public UserRequestValidator()
         {
