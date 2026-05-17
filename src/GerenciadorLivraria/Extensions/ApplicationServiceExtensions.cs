@@ -4,7 +4,6 @@ using GerenciadorLivraria.Extensions.SwaggerDocumentation;
 using GerenciadorLivraria.Infrastructure.Connections;
 using GerenciadorLivraria.Infrastructure.Repository;
 using GerenciadorLivraria.Infrastructure.Repository.Interfaces;
-using GerenciadorLivraria.Infrastructure.Repository.RepositoryUoW;
 using GerenciadorLivraria.Shared.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

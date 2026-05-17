@@ -1,11 +1,13 @@
-﻿using GerenciadorLivraria.Domain.Entities;
+﻿using GerenciadorLivraria.Application.Abstractions.Persistence;
+using GerenciadorLivraria.Application.Abstractions.Repositories;
+using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Infrastructure.Connections;
 using GerenciadorLivraria.Infrastructure.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 using Serilog;
 
-namespace GerenciadorLivraria.Infrastructure.Repository.RepositoryUoW
+namespace GerenciadorLivraria.Infrastructure.Repository
 {
     public class RepositoryUoW : IRepositoryUoW
     {
@@ -13,6 +15,7 @@ namespace GerenciadorLivraria.Infrastructure.Repository.RepositoryUoW
         private readonly UserManager<UserEntity> _userManager;
         private bool _disposed = false;
         private IUserRepository? _userEntityRepository = null;
+        private IBookRepository? _bookEntityRepository = null;
 
         public RepositoryUoW(DataContext context, UserManager<UserEntity> userManager)
         {
@@ -29,6 +32,18 @@ namespace GerenciadorLivraria.Infrastructure.Repository.RepositoryUoW
                     _userEntityRepository = new UserRepository(_context, _userManager);
                 }
                 return _userEntityRepository;
+            }
+        }
+
+        public IBookRepository BookRepository
+        {
+            get
+            {
+                if (_bookEntityRepository is null)
+                {
+                    _bookEntityRepository = new BookRepository(_context);
+                }
+                return _bookEntityRepository;
             }
         }
 

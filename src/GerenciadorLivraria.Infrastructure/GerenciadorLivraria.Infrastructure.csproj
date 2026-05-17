@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GerenciadorLivraria.Application\GerenciadorLivraria.Application.csproj" />
     <ProjectReference Include="..\GerenciadorLivraria.Domain\GerenciadorLivraria.Domain.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,5 @@
 ﻿using GerenciadorLivraria.Application.Services;
 using GerenciadorLivraria.Domain.Entities;
-using GerenciadorLivraria.Infrastructure.Repository.RepositoryUoW;
 using Microsoft.AspNetCore.Identity;
 
 namespace GerenciadorLivraria.Application.Abstractions.Persistence
@@ -11,6 +10,7 @@ namespace GerenciadorLivraria.Application.Abstractions.Persistence
         private readonly UserManager<UserEntity> _userManager;
         private readonly RoleManager<ProfileEntity> _roleManager;
         private UserService userService;
+        private BookService bookService;
         private AuthenticationService authenticationService;
 
         public UnitOfWorkService(
@@ -19,7 +19,7 @@ namespace GerenciadorLivraria.Application.Abstractions.Persistence
             RoleManager<ProfileEntity> roleManager)
         {
             _repositoryUoW = repositoryUoW;
-            _userManager = userManager;
+            _userManager = userManager; 
             _roleManager = roleManager;
         }
 
@@ -33,6 +33,17 @@ namespace GerenciadorLivraria.Application.Abstractions.Persistence
                         _userManager,
                         _roleManager);
                 return userService;
+            }
+        }
+
+        public BookService BookService
+        {
+            get
+            {
+                if (bookService is null)
+                    bookService = new BookService(
+                        _repositoryUoW);
+                return bookService;
             }
         }
 

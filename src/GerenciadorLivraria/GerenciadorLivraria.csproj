@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GerenciadorLivraria.Application\GerenciadorLivraria.Application.csproj" />
+    <ProjectReference Include="..\GerenciadorLivraria.Infrastructure\GerenciadorLivraria.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
-﻿using GerenciadorLivraria.Application.Dto;
-using GerenciadorLivraria.Application.Services.Interfaces;
+﻿using GerenciadorLivraria.Application.Abstractions.Persistence;
+using GerenciadorLivraria.Application.Abstractions.Services;
+using GerenciadorLivraria.Application.Contracts.Dto.UserDto;
 using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Domain.OperationResult;
-using GerenciadorLivraria.Infrastructure.Repository.RepositoryUoW;
 using Microsoft.AspNetCore.Identity;
 
 namespace GerenciadorLivraria.Application.Services

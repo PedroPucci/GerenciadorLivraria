@@ -1,7 +1,7 @@
-﻿using GerenciadorLivraria.Application.Dto;
+﻿using GerenciadorLivraria.Application.Contracts.Dto.UserDto;
 using GerenciadorLivraria.Domain.OperationResult;
 
-namespace GerenciadorLivraria.Application.Services.Interfaces
+namespace GerenciadorLivraria.Application.Abstractions.Services
 {
     public interface IAuthenticationUserService
     {

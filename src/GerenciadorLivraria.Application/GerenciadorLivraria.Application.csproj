@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GerenciadorLivraria.Domain\GerenciadorLivraria.Domain.csproj" />
-    <ProjectReference Include="..\GerenciadorLivraria.Infrastructure\GerenciadorLivraria.Infrastructure.csproj" />
     <ProjectReference Include="..\GerenciadorLivraria.Shared\GerenciadorLivraria.Shared.csproj" />
   </ItemGroup>
 

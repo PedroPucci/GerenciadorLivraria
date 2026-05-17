@@ -10,7 +10,9 @@ namespace GerenciadorLivraria.Infrastructure.Repository
         private readonly DataContext _context;
         private readonly UserManager<UserEntity> _userManager;
 
-        public UserRepository(DataContext context, UserManager<UserEntity> userManager)
+        public UserRepository(
+            DataContext context, 
+            UserManager<UserEntity> userManager)
         {
             _context = context;
             _userManager = userManager;

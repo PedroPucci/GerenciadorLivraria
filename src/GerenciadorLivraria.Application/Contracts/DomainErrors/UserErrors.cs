@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace GerenciadorLivraria.Shared.DomainErrors
+namespace GerenciadorLivraria.Application.Contracts.DomainErrors
 {
     public enum UserErrors
     {

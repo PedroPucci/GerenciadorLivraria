@@ -1,9 +1,11 @@
 ﻿using FluentValidation;
-using GerenciadorLivraria.Shared.DomainErrors;
+using GerenciadorLivraria.Application.Contracts.DomainErrors;
+using GerenciadorLivraria.Application.Contracts.Dto.UserDto;
+using GerenciadorLivraria.Shared.Helpers;
 
 namespace GerenciadorLivraria.Application.Validators
 {
-    public class UserRequestValidator : AbstractValidator<UserResponse>
+    public class UserRequestValidator : AbstractValidator<UserResponseDto>
     {
         public UserRequestValidator()
         {
