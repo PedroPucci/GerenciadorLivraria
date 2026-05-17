@@ -1,6 +1,7 @@
 ﻿using GerenciadorLivraria.Application.Abstractions.Repositories;
 using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Infrastructure.Connections;
+using Microsoft.EntityFrameworkCore;
 
 namespace GerenciadorLivraria.Infrastructure.Repository
 {
@@ -13,34 +14,52 @@ namespace GerenciadorLivraria.Infrastructure.Repository
             _context = context;
         }
 
-        public Task<BookEntity> Add(BookEntity bookEntity)
+        public async Task<BookEntity> Add(BookEntity bookEntity)
         {
-            throw new NotImplementedException();
+            var result = await _context.Books.AddAsync(bookEntity);
+            await _context.SaveChangesAsync();
+            return bookEntity;
         }
 
-        public Task<bool> Delete(string id)
+        public async Task<bool> Delete(string id)
         {
-            throw new NotImplementedException();
+            var book = await GetById(id);
+
+            if (book == null)
+                return false;
+
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
-        public Task<List<BookEntity>> Get()
+        public async Task<List<BookEntity>> Get()
         {
-            throw new NotImplementedException();
+            return await _context.Books
+            .AsNoTracking()
+            .OrderBy(game => game.Id)
+            .Select(game => new BookEntity
+            {
+                Title = game.Title,
+                Description = game.Description
+            })
+            .ToListAsync();
         }
 
-        public Task<BookEntity?> GetById(string id)
+        public async Task<BookEntity?> GetById(string id)
         {
-            throw new NotImplementedException();
+            return await _context.Books.FindAsync(id);
         }
 
-        public Task<BookEntity?> GetByName(string name)
+        public async Task<BookEntity?> GetByName(string name)
         {
-            throw new NotImplementedException();
+            return await _context.Books.FindAsync(name);
         }
 
         public BookEntity Update(BookEntity bookEntity)
         {
-            throw new NotImplementedException();
+            return _context.Books.Update(bookEntity).Entity;
         }
     }
 }
