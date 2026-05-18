@@ -92,24 +92,133 @@ namespace GerenciadorLivraria.Application.Services
             }
         }
 
-        public Task<Result<bool>> Delete(string id)
+        public async Task<Result<bool>> Delete(string id)
         {
-            throw new NotImplementedException();
+            using var transaction = _repositoryUoW.BeginTransaction();
+
+            try
+            {
+                var user = await _repositoryUoW.UserRepository.GetByIdCheck(id);
+
+                if (user is null)
+                {
+                    transaction.Rollback();
+
+                    var message = LogMessages.CannotPerformActionOnUser("retrieve", id);
+                    Log.Error(message);
+
+                    return Result<bool>.Error(message);
+                }
+
+                user.IsActive = false;
+                user.ModificationDate = DateTime.UtcNow;
+
+                _repositoryUoW.UserRepository.Update(user);
+                await _repositoryUoW.SaveAsync();
+                await transaction.CommitAsync();
+
+                Log.Information(LogMessages.DeleteUserSuccess(user));
+                return Result<bool>.Ok();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                Log.Error(LogMessages.DeleteUserError(ex));
+                throw new InvalidOperationException($"Failed to delete user with id {id}. See logs for details.", ex);
+            }
         }
 
-        public Task<List<UserResponseDto>> Get()
+        public async Task<List<UserEntity>> Get()
         {
-            throw new NotImplementedException();
+            using var transaction = _repositoryUoW.BeginTransaction();
+
+            try
+            {
+                List<UserEntity> userEntities = await _repositoryUoW.UserRepository.Get();
+                _repositoryUoW.Commit();
+
+                Log.Information(LogMessages.GetAllUsersSuccess());
+                return userEntities;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                Log.Error(LogMessages.GetAllUsersError(ex));
+                throw new InvalidOperationException("Error to loading the list User. See logs for details.", ex);
+            }
         }
 
-        public Task<Result<UserResponseDto>> GetById(string id)
+        public async Task<Result<UserResponseDto>> GetById(string id)
         {
-            throw new NotImplementedException();
+            using var transaction = _repositoryUoW.BeginTransaction();
+
+            try
+            {
+                var user = await _repositoryUoW.UserRepository.GetByIdCheck(id);
+
+                if (user is null)
+                {
+                    transaction.Rollback();
+
+                    var message = LogMessages.CannotPerformActionOnUser("retrieve", id);
+                    Log.Error(message);
+
+                    return Result<UserResponseDto>.Error(message);
+                }
+
+                var userResponse = new UserResponseDto
+                {
+                    Email = user?.Email,
+                    Name = user?.Name,
+                    IsActive = user?.IsActive ?? false
+                };
+
+                _repositoryUoW.Commit();
+
+                Log.Information(LogMessages.GetUserByIdSuccess(user));
+                return Result<UserResponseDto>.Ok(userResponse);
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                Log.Error(LogMessages.GetUserByIdError(ex));
+                throw new InvalidOperationException("Error retrieving the user. See inner exception for details.", ex);
+            }
         }
 
-        public Task<Result<bool>> Update(string id, UpdateUserRequestDto updateUserRequestDto)
+        public async Task<Result<bool>> Update(string id, UpdateUserRequestDto updateUserRequestDto)
         {
-            throw new NotImplementedException();
+            using var transaction = _repositoryUoW.BeginTransaction();
+
+            try
+            {
+                var user = await _repositoryUoW.UserRepository.GetByIdCheck(id);
+
+                if (user is null)
+                {
+                    var message = LogMessages.CannotPerformActionOnUser("update", id);
+                    Log.Error(message);
+                    return Result<bool>.Error(message);
+                }
+
+                user.Email = updateUserRequestDto.Email;
+                user.Name = updateUserRequestDto.Name;
+                user.IsActive = updateUserRequestDto.IsActive;
+                user.ModificationDate = DateTime.UtcNow;
+
+                _repositoryUoW.UserRepository.Update(user);
+                await _repositoryUoW.SaveAsync();
+                await transaction.CommitAsync();
+
+                Log.Information(LogMessages.UpdateUserSuccess(user));
+                return Result<bool>.Ok(true);
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                Log.Error(LogMessages.UpdateUserError(ex));
+                throw new InvalidOperationException($"Failed to update user with id. See logs for details.", ex);
+            }
         }
 
         private async Task<Result<CreateUserRequestDto>> IsValidUserRequest(CreateUserRequestDto createUserRequestDto)

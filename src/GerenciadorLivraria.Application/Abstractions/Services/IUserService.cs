@@ -9,7 +9,7 @@ namespace GerenciadorLivraria.Application.Abstractions.Services
         Task<Result<UserEntity>> Add(CreateUserRequestDto createUserRequestDto);
         Task<Result<bool>> Update(string id, UpdateUserRequestDto updateUserRequestDto);
         Task<Result<bool>> Delete(string id);
-        Task<List<UserResponseDto>> Get();
+        Task<List<UserEntity>> Get();
         Task<Result<UserResponseDto>> GetById(string id);
     }
 }
