@@ -48,7 +48,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <Folder Include="Services\Book\" />
+    <Folder Include="Services\User\" />
+    <Folder Include="Validators\Book\" />
+    <Folder Include="Validators\User\" />
   </ItemGroup>
 
 </Project>
