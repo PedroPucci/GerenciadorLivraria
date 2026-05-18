@@ -35,18 +35,44 @@ A solução foi construída com foco em escalabilidade, organização, manutenib
 - Postman
 - ---
 ## **Recursos do Projeto**
-- **Serilog**: Para geração e gerenciamento de logs.
-- **FluentValidator**: Para validação de dados e regras de negócios.
-- **Entity Framework (ORM)**: Para mapeamento e interação com o banco de dados.
-- **Unit of Work**: Padrão de design para gerenciar transações e persistência de dados de forma coesa.
-- **Migrations**: Gerenciamento de alterações no banco de dados.
-- **Xunit/Moq**: Para criação de testes unitários. 3A's (Arrange, Act, Assert).
-- **BDD com Reqnroll**: Testes de comportamento baseados em cenários (Gherkin).
-- **FluentAssertions**: Melhor legibilidade nas validações.
-- **ASP.NET Core Identity**: Implementação de autenticação e autorização baseada em identidade, com gerenciamento de usuários, roles e controle de acesso seguro à aplicação.
-- **Health Checks**:
-- **Redis Cache**:
-- **Autenticação com JWT**:
+- **Serilog**: Para geração e gerenciamento de logs estruturados da aplicação.
+- **FluentValidation**: Para validação de dados e regras de negócio.
+- **Entity Framework Core (ORM)**: Para mapeamento e interação com o banco de dados.
+- **Repository Pattern**: Para abstração da camada de acesso a dados.
+- **Unit of Work**: Padrão utilizado para gerenciamento de transações e persistência de dados.
+- **Migrations**: Gerenciamento e versionamento das alterações do banco de dados.
+- **xUnit + Moq**: Para criação de testes unitários utilizando o padrão AAA (Arrange, Act, Assert).
+- **BDD com Reqnroll**: Testes de comportamento baseados em cenários utilizando Gherkin.
+- **FluentAssertions**: Melhor legibilidade e fluidez nas validações dos testes.
+- **ASP.NET Core Identity**: Gerenciamento de autenticação, autorização, usuários e perfis.
+- **JWT Authentication**: Implementação de autenticação baseada em tokens JWT.
+- **Health Checks**: Monitoramento da saúde da aplicação, verificando API, SQL Server e Redis.
+- **Redis Cache**: Cache distribuído para otimização de consultas e melhoria de performance.
+- **Swagger/OpenAPI**: Documentação automatizada e interativa dos endpoints da API.
+- **Soft Delete**: Exclusão lógica de registros utilizando controle por status ativo/inativo.
+- **Paginação, filtros e ordenação**: Suporte para consultas otimizadas e flexíveis.
+- **Tratamento Global de Exceções**: Middleware centralizado para padronização de erros da API.
+- **Logs Estruturados**: Registro detalhado de operações e exceções para auditoria e monitoramento.
+- **Docker**: Containerização da aplicação para facilitar execução e deploy.
+- **Autorização por Roles**: Controle de acesso baseado em perfis como Admin e User.
+- **Rate Limiting**: Proteção da API contra excesso de requisições.
+- **Correlation ID**: Rastreamento de requisições para observabilidade e troubleshooting.
+---
+## **Estrutura do projeto**
+A aplicação foi estruturada utilizando separação em camadas:
+
+- API
+- Application
+- Domain
+- Infrastructure
+- Shared
+
+Seguindo princípios como:
+- SOLID
+- Clean Code
+- Separation of Concerns
+- Repository Pattern
+- Unit of Work
 ---
 ## **Como Executar o Projeto**
 ### **1. Configuração Inicial do Banco de Dados**
