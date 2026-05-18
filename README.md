@@ -1,24 +1,14 @@
 # GerenciadorLivraria
-
 ## Documentação
 
-- [Descrição do Desafio Técnico](docs/desafio-tecnico-livraria.pdf)
+- [Desafio Técnico](docs/desafio-tecnico-livraria.pdf)
+- [Arquitetura da Solução](docs/arquitetura.pdf)
+- [Estrutura do Projeto](docs/estrutura-projeto.pdf)
+- [Fluxo de Autenticação](docs/fluxo-autenticacao.pdf)
+- [Estratégia de Cache](docs/cache-strategy.pdf)
 
-# **Descrição do projeto**
-- A API GerenciadorLivraria é uma solução moderna para gerenciamento de livros de uma livraria.
-Desenvolvida em .NET 8, a aplicação permite realizar operações de cadastro, consulta, atualização e remoção de livros, 
-seguindo boas práticas de arquitetura e desenvolvimento.
-
-Principais Recursos:
-- CRUD completo de livros.
-- Validações utilizando FluentValidation.
-- Documentação automatizada com Swagger.
-- Logs estruturados com Serilog.
-- Testes unitários e BDD.
-- Arquitetura organizada em camadas.
-- Health Checks para monitoramento da aplicação.
-
-A solução foi construída com foco em escalabilidade, organização, manutenibilidade e boas práticas de desenvolvimento backend.
+## **Descrição do projeto**
+- API REST desenvolvida em .NET 8 utilizando Entity Framework Core, SQL Server e padrões arquiteturais como Repository Pattern e Unit of Work, com suporte a autenticação JWT, Redis Cache, observabilidade, validações, testes automatizados e documentação via Swagger.
 
 # **Solução**
 - API REST desenvolvida em .NET 8.0, utilizando Entity Framework Core e os padrões Unit of Work e Repository, com suporte a validações, tratamento de erros, logging e documentação via Swagger.
@@ -33,7 +23,7 @@ A solução foi construída com foco em escalabilidade, organização, manutenib
 - SQL Server Management Studio (SSMS)
 - Git / Git Bash
 - Postman
-- ---
+---
 ## **Recursos do Projeto**
 - **Serilog**: Para geração e gerenciamento de logs estruturados da aplicação.
 - **FluentValidation**: Para validação de dados e regras de negócio.
@@ -58,21 +48,47 @@ A solução foi construída com foco em escalabilidade, organização, manutenib
 - **Rate Limiting**: Proteção da API contra excesso de requisições.
 - **Correlation ID**: Rastreamento de requisições para observabilidade e troubleshooting.
 ---
-## **Estrutura do projeto**
-A aplicação foi estruturada utilizando separação em camadas:
+## **Estrutura do Projeto**
 
-- API
-- Application
-- Domain
-- Infrastructure
-- Shared
+A aplicação foi organizada em camadas para promover separação de responsabilidades, manutenibilidade, testabilidade e escalabilidade.
 
-Seguindo princípios como:
+### Camadas da aplicação
+- **API**: Controllers, middlewares, autenticação, Swagger e configuração da aplicação.
+- **Application**: Regras de negócio, services, DTOs, validações e contratos.
+- **Domain**: Entidades, enums e regras centrais do domínio.
+- **Infrastructure**: Persistência de dados, Entity Framework Core, Redis, Identity e integrações externas.
+- **Shared**: Classes compartilhadas, helpers, responses e utilitários comuns.
+
+### Princípios e padrões utilizados
 - SOLID
 - Clean Code
 - Separation of Concerns
 - Repository Pattern
 - Unit of Work
+- Dependency Injection
+- Middleware Pattern
+---
+## Autenticação e Autorização
+
+A API utiliza autenticação JWT com controle de acesso baseado em roles:
+- Admin
+- User
+
+---
+## Estratégia de Cache
+
+O Redis foi utilizado para cache dos endpoints de consulta:
+- GET /api/books
+- GET /api/books/{id}
+- GET /api/books/search
+---
+## Observabilidade
+
+A aplicação possui:
+- Serilog
+- Health Checks
+- Correlation ID
+- Middleware global de exceções
 ---
 ## **Como Executar o Projeto**
 ### **1. Configuração Inicial do Banco de Dados**
