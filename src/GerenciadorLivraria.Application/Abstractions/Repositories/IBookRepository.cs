@@ -12,5 +12,6 @@ namespace GerenciadorLivraria.Application.Abstractions.Repositories
         Task<BookEntity?> GetByName(string name);
         Task<BookEntity?> GetByTitleAndAuthor(string title, string author);
         Task<BookEntity?> GetByIsbn(string isbn);
+        Task<bool> GetIsActiveByTitle(string title);
     }
 }

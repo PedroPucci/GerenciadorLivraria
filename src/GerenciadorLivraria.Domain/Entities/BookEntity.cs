@@ -12,6 +12,7 @@ namespace GerenciadorLivraria.Domain.Entities
         public string? Publisher { get; set; }
         public int PublishedYear { get; set; }
         public string? Description { get; set; }
+        public int Stock { get; set; }
 
         public bool IsActive { get; set; }
         public DateTime? CreateDate { get; set; }

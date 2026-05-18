@@ -116,6 +116,9 @@ namespace GerenciadorLivraria.Shared.Logging
         public static string BookIsbnAlreadyExistsError(string isbn) =>
             $"A book with ISBN '{isbn}' already exists and cannot be added.";
 
+        public static string BookAlreadyActiveError(string title) =>
+            $"A book with title '{title}' is already active.";
+
         #endregion
     }
 }

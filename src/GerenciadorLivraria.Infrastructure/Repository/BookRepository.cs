@@ -75,5 +75,13 @@ namespace GerenciadorLivraria.Infrastructure.Repository
             return await _context.Books
                 .FirstOrDefaultAsync(book => book.ISBN == isbn);
         }
+
+        public async Task<bool> GetIsActiveByTitle(string title)
+        {
+            return await _context.Books
+                .Where(book => book.Title == title)
+                .Select(book => book.IsActive)
+                .FirstOrDefaultAsync();
+        }
     }
 }

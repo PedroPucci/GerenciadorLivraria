@@ -98,14 +98,80 @@ namespace GerenciadorLivraria.Application.Services
             }
         }
 
-        public Task<Result<BookResponseDto>> GetById(string id)
+        public async Task<Result<BookEntity>> GetById(string id)
         {
-            throw new NotImplementedException();
+            using var transaction = _repositoryUoW.BeginTransaction();
+
+            try
+            {
+                var book = await _repositoryUoW.BookRepository.GetById(id);
+
+                var bookEntity = new BookEntity
+                {
+                    Title = book.Title,
+                    Author = book.Author,
+                    Genre = book.Genre,
+                    Description = book.Description,
+                    Stock = book.Stock,
+                    IsActive = book.IsActive,
+                };
+
+                var isActiveBook = await _repositoryUoW.BookRepository.GetIsActiveByTitle(bookEntity.Title);
+                if (isActiveBook)
+                {
+                    Log.Information(LogMessages.BookAlreadyActiveError(bookEntity.Title));
+                    return Result<BookEntity>.Error("A book with the same title is already active.");
+                }
+
+                _repositoryUoW.Commit();
+
+                Log.Information(LogMessages.GetBookByIdSuccess(bookEntity));
+                return Result<BookEntity>.Ok(bookEntity);
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                Log.Error(LogMessages.GetBookByIdError(ex));
+                throw new InvalidOperationException("Error retrieving the book. See inner exception for details.", ex);
+            }
         }
 
-        public Task<Result<BookResponseDto>> GetByName(string name)
+        public async Task<Result<BookEntity>> GetByName(string name)
         {
-            throw new NotImplementedException();
+            using var transaction = _repositoryUoW.BeginTransaction();
+
+            try
+            {
+                var book = await _repositoryUoW.BookRepository.GetByName(name);
+
+                var bookEntity = new BookEntity
+                {
+                    Title = book.Title,
+                    Author = book.Author,
+                    Genre = book.Genre,
+                    Description = book.Description,
+                    Stock = book.Stock,
+                    IsActive = book.IsActive,
+                };
+
+                var isActiveBook = await _repositoryUoW.BookRepository.GetIsActiveByTitle(bookEntity.Title);
+                if (isActiveBook)
+                {
+                    Log.Information(LogMessages.BookAlreadyActiveError(bookEntity.Title));
+                    return Result<BookEntity>.Error("A book with the same title is already active.");
+                }
+
+                _repositoryUoW.Commit();
+
+                Log.Information(LogMessages.GetBookByIdSuccess(bookEntity));
+                return Result<BookEntity>.Ok(bookEntity);
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                Log.Error(LogMessages.GetBookByIdError(ex));
+                throw new InvalidOperationException("Error retrieving the book. See inner exception for details.", ex);
+            }
         }
 
         public Task<Result<bool>> Update(string id, UpdateBookRequestDto updateBookRequestDto)
