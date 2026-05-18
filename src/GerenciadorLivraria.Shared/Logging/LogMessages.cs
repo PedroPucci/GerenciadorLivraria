@@ -77,5 +77,45 @@ namespace GerenciadorLivraria.Shared.Logging
             "Password updated successfully.";
 
         #endregion
+
+        #region Book CRUD
+
+        public static string AddBookError(Exception ex) =>
+            $"Error adding book. Details: {ex.Message}";
+
+        public static string AddBookSuccess(BookEntity bookEntity) =>
+            $"Book title: {bookEntity.Title} - id: {bookEntity.Id} added successfully.";
+
+        public static string UpdateBookError(Exception ex) =>
+            $"Error updating book. Details: {ex.Message}";
+
+        public static string UpdateBookSuccess(BookEntity bookEntity) =>
+            $"Book title: {bookEntity.Title} - id: {bookEntity.Id} updated successfully.";
+
+        public static string DeleteBookError(Exception ex) =>
+            $"Error deleting book. Details: {ex.Message}";
+
+        public static string DeleteBookSuccess(BookEntity bookEntity) =>
+            $"Book title: {bookEntity.Title} - id: {bookEntity.Id} deleted successfully.";
+
+        public static string GetAllBooksError(Exception ex) =>
+            $"Error retrieving books list. Details: {ex.Message}";
+
+        public static string GetAllBooksSuccess() =>
+            "Books retrieved successfully.";
+
+        public static string GetBookByIdError(Exception ex) =>
+            $"Error retrieving book by id. Details: {ex.Message}";
+
+        public static string GetBookByIdSuccess(BookEntity bookEntity) =>
+            $"Book title: {bookEntity.Title} - id: {bookEntity.Id} retrieved successfully.";
+
+        public static string BookAlreadyExistsError(string title, string author) =>
+            $"A book with title '{title}' and author '{author}' already exists and cannot be added.";
+
+        public static string BookIsbnAlreadyExistsError(string isbn) =>
+            $"A book with ISBN '{isbn}' already exists and cannot be added.";
+
+        #endregion
     }
 }

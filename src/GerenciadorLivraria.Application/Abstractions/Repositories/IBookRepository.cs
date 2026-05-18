@@ -10,5 +10,7 @@ namespace GerenciadorLivraria.Application.Abstractions.Repositories
         Task<List<BookEntity>> Get();
         Task<BookEntity?> GetById(string id);
         Task<BookEntity?> GetByName(string name);
+        Task<BookEntity?> GetByTitleAndAuthor(string title, string author);
+        Task<BookEntity?> GetByIsbn(string isbn);
     }
 }

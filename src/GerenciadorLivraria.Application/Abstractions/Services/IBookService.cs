@@ -9,7 +9,7 @@ namespace GerenciadorLivraria.Application.Abstractions.Services
         Task<Result<BookEntity>> Add(CreateBookRequestDto createBookRequestDto);
         Task<Result<bool>> Update(string id, UpdateBookRequestDto updateBookRequestDto);
         Task<Result<bool>> Delete(string id);
-        Task<List<BookResponseDto>> Get();
+        Task<List<BookEntity>> Get();
         Task<Result<BookResponseDto>> GetById(string id);
         Task<Result<BookResponseDto>> GetByName(string name);
     }

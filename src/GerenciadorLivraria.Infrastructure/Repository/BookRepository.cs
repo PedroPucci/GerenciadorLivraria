@@ -61,5 +61,19 @@ namespace GerenciadorLivraria.Infrastructure.Repository
         {
             return _context.Books.Update(bookEntity).Entity;
         }
+
+        public async Task<BookEntity?> GetByTitleAndAuthor(string title, string author)
+        {
+            return await _context.Books
+                .FirstOrDefaultAsync(book =>
+                    book.Title == title &&
+                    book.Author == author);
+        }
+
+        public async Task<BookEntity?> GetByIsbn(string isbn)
+        {
+            return await _context.Books
+                .FirstOrDefaultAsync(book => book.ISBN == isbn);
+        }
     }
 }
