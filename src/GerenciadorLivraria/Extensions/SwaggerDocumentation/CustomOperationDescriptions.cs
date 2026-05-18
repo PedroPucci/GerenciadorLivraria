@@ -15,7 +15,9 @@ namespace GerenciadorLivraria.Extensions.SwaggerDocumentation
             var routeHandlers = new Dictionary<string, Action>(StringComparer.OrdinalIgnoreCase)
             {
                 { "users",               () => HandleUsersOperations(operation, context) },
-                { "books",               () => HandleBooksOperations(operation, context) }
+                { "books",               () => HandleBooksOperations(operation, context) },
+                { "auth",               () => HandleAuthOperations(operation, context) }
+
             };
 
             foreach (var kv in routeHandlers
@@ -114,6 +116,20 @@ namespace GerenciadorLivraria.Extensions.SwaggerDocumentation
                     operation.Description = "This endpoint is responsible for retrieving a book by name.";
                     AddResponses(operation, "200", "Book retrieved successfully.");
                 }
+            }
+        }
+
+        private void HandleAuthOperations(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var method = context.ApiDescription.HttpMethod;
+            var path = context.ApiDescription.RelativePath?.ToLower() ?? string.Empty;
+
+            if (method == "POST" && path.Contains("auth/login"))
+            {
+                operation.Summary = "Authenticate user.";
+                operation.Description = "This endpoint allows the user to authenticate by providing login credentials.";
+                AddResponses(operation, "200", "User authenticated successfully.");
+                AddResponses(operation, "401", "Invalid email or password.");
             }
         }
 
