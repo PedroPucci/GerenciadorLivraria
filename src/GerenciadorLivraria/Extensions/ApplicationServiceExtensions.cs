@@ -1,6 +1,8 @@
-﻿using GerenciadorLivraria.Application.Abstractions.Persistence;
+﻿using GerenciadorLivraria.Application.Abstractions.Cache;
+using GerenciadorLivraria.Application.Abstractions.Persistence;
 using GerenciadorLivraria.Domain.Entities;
 using GerenciadorLivraria.Extensions.SwaggerDocumentation;
+using GerenciadorLivraria.Infrastructure.Cache;
 using GerenciadorLivraria.Infrastructure.Connections;
 using GerenciadorLivraria.Infrastructure.Repository;
 using GerenciadorLivraria.Infrastructure.Repository.Interfaces;
@@ -173,6 +175,7 @@ namespace GerenciadorLivraria.Extensions
 
             services.AddScoped<IRepositoryUoW, RepositoryUoW>();
             services.AddScoped<IUnitOfWorkService, UnitOfWorkService>();
+            services.AddScoped<ICacheService, RedisCacheService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<AuthenticationService>();
 

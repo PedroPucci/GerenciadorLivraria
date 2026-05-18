@@ -11,6 +11,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "GerenciadorLivraria:";
+});
 //builder.Services.AddHealthChecks().AddDbContextCheck<DataContext>();
 builder.Services.AddHealthChecks().AddDbContextCheck<DataContext>("sqlserver");
 
