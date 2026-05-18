@@ -9,7 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddHealthChecks().AddDbContextCheck<DataContext>();
 
 LogExtension.InitializeLogger();
 var loggerSerialLog = LogExtension.GetLogger();
@@ -43,6 +43,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 var runMigrations = builder.Configuration.GetValue<bool>("RunMigrations");
 if (runMigrations)
