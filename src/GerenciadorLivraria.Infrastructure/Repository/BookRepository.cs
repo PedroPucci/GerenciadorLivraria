@@ -21,7 +21,7 @@ namespace GerenciadorLivraria.Infrastructure.Repository
             return bookEntity;
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(Guid id)
         {
             var book = await GetById(id);
 
@@ -34,7 +34,7 @@ namespace GerenciadorLivraria.Infrastructure.Repository
             return true;
         }
 
-        public async Task<List<BookEntity>> Get()
+        public async Task<List<BookEntity>> GetAll()
         {
             return await _context.Books
             .AsNoTracking()
@@ -47,7 +47,32 @@ namespace GerenciadorLivraria.Infrastructure.Repository
             .ToListAsync();
         }
 
-        public async Task<BookEntity?> GetById(string id)
+        public async Task<List<BookEntity>> Get(int page, int size)
+        {
+            return await _context.Books
+                .AsNoTracking()
+                .OrderBy(book => book.Id)
+                .Skip((page - 1) * size)
+                .Take(size)
+                .Select(book => new BookEntity
+                {
+                    Id = book.Id,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Description = book.Description,
+                    Genre = book.Genre,
+                    ISBN = book.ISBN,
+                    PublishedYear = book.PublishedYear,
+                    Publisher = book.Publisher,
+                    Stock = book.Stock,
+                    IsActive = book.IsActive,
+                    CreateDate = book.CreateDate,
+                    ModificationDate = book.ModificationDate
+                })
+                .ToListAsync();
+        }
+
+        public async Task<BookEntity?> GetById(Guid id)
         {
             return await _context.Books.FindAsync(id);
         }

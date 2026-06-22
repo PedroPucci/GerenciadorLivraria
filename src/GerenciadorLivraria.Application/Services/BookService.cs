@@ -99,6 +99,50 @@ namespace GerenciadorLivraria.Application.Services
             throw new NotImplementedException();
         }
 
+        //public async Task<List<BookEntity>> Get(int page, int size)
+        //{
+        //    var cacheKey = CacheKeys.BooksAll(page, size);
+
+        //    var cachedBooks = await _cacheService
+        //        .GetAsync<List<BookEntity>>(cacheKey);
+
+        //    if (cachedBooks is not null)
+        //    {
+        //        Log.Information("Books loaded from Redis cache.");
+        //        return cachedBooks;
+        //    }
+
+        //    using var transaction = _repositoryUoW.BeginTransaction();
+
+        //    try
+        //    {
+        //        List<BookEntity> bookEntities = await _repositoryUoW
+        //            .BookRepository
+        //            .Get(page, size);
+
+        //        _repositoryUoW.Commit();
+
+        //        await _cacheService.SetAsync(
+        //            cacheKey,
+        //            bookEntities,
+        //            TimeSpan.FromMinutes(5));
+
+        //        Log.Information(LogMessages.GetAllBooksSuccess());
+
+        //        return bookEntities;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        transaction.Rollback();
+
+        //        Log.Error(LogMessages.GetAllBooksError(ex));
+
+        //        throw new InvalidOperationException(
+        //            "Error to loading the list Book. See logs for details.",
+        //            ex);
+        //    }
+        //}
+
         public async Task<List<BookEntity>> Get(int page, int size)
         {
             var cacheKey = CacheKeys.BooksAll(page, size);
@@ -112,15 +156,11 @@ namespace GerenciadorLivraria.Application.Services
                 return cachedBooks;
             }
 
-            using var transaction = _repositoryUoW.BeginTransaction();
-
             try
             {
-                List<BookEntity> bookEntities = await _repositoryUoW
+                var bookEntities = await _repositoryUoW
                     .BookRepository
                     .Get(page, size);
-
-                _repositoryUoW.Commit();
 
                 await _cacheService.SetAsync(
                     cacheKey,
@@ -133,8 +173,6 @@ namespace GerenciadorLivraria.Application.Services
             }
             catch (Exception ex)
             {
-                transaction.Rollback();
-
                 Log.Error(LogMessages.GetAllBooksError(ex));
 
                 throw new InvalidOperationException(
@@ -143,7 +181,7 @@ namespace GerenciadorLivraria.Application.Services
             }
         }
 
-        public async Task<Result<BookEntity>> GetById(string id)
+        public async Task<Result<BookEntity>> GetById(Guid id)
         {
             var cacheKey = CacheKeys.BookById(id);
 

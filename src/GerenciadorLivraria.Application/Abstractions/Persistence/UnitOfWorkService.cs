@@ -1,4 +1,5 @@
-﻿using GerenciadorLivraria.Application.Services;
+﻿using GerenciadorLivraria.Application.Abstractions.Cache;
+using GerenciadorLivraria.Application.Services;
 using GerenciadorLivraria.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -12,15 +13,18 @@ namespace GerenciadorLivraria.Application.Abstractions.Persistence
         private UserService userService;
         private BookService bookService;
         private AuthenticationService authenticationService;
+        private readonly ICacheService _cacheService;
 
         public UnitOfWorkService(
             IRepositoryUoW repositoryUoW,
             UserManager<UserEntity> userManager,
-            RoleManager<ProfileEntity> roleManager)
+            RoleManager<ProfileEntity> roleManager,
+            ICacheService cacheService)
         {
             _repositoryUoW = repositoryUoW;
             _userManager = userManager; 
             _roleManager = roleManager;
+            _cacheService = cacheService;
         }
 
         public UserService UserService
@@ -42,7 +46,7 @@ namespace GerenciadorLivraria.Application.Abstractions.Persistence
             {
                 if (bookService is null)
                     bookService = new BookService(
-                        _repositoryUoW);
+                        _repositoryUoW, _cacheService);
                 return bookService;
             }
         }

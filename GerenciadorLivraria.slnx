@@ -2,6 +2,10 @@
   <Folder Name="/docs/">
     <File Path="docs/desafio-tecnico-livraria.pdf" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="docker-compose.yml" />
+    <File Path="Dockerfile" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/GerenciadorLivraria.Application/GerenciadorLivraria.Application.csproj" />
     <Project Path="src/GerenciadorLivraria.Domain/GerenciadorLivraria.Domain.csproj" />
