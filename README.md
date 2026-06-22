@@ -18,6 +18,11 @@
 - Entity Framework Core
 - SQL Server
 
+## Infraestrutura
+- Docker
+- Docker Compose
+- Redis
+
 ## **Ferramentas**
 - Visual Studio 2022
 - SQL Server Management Studio (SSMS)
