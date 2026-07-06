@@ -18,6 +18,11 @@
 - Entity Framework Core
 - SQL Server
 
+## Infraestrutura
+- Docker
+- Docker Compose
+- Redis
+
 ## **Ferramentas**
 - Visual Studio 2022
 - SQL Server Management Studio (SSMS)
@@ -98,7 +103,6 @@ A aplicação possui:
    - Certifique-se de selecionar o projeto relacionado ao banco de dados no menu "Default project".
    - Execute:
      ```bash
-     add-migration PrimeiraMigracao
      update-database
      ```
    - Isso criará e configurará o banco de dados no Microsoft SQL Server.
