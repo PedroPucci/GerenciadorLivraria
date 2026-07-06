@@ -1,9 +1,37 @@
-version: '3.9'
-
 services:
+  gerenciadorlivraria-api:
+    container_name: gerenciadorlivraria-api
+    build:
+      context: .
+      dockerfile: src/GerenciadorLivraria/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      RunMigrations: "true"
+      ConnectionStrings__WebApiDatabase: "Server=sqlserver;Database=GerenciadorLivraria;User Id=sa;Password=Your_password123;TrustServerCertificate=True;"
+      ConnectionStrings__Redis: "redis:6379"
+    depends_on:
+      - sqlserver
+      - redis
+
+  sqlserver:
+    container_name: gerenciadorlivraria-sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Your_password123"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
 
   redis:
-    image: redis:7
     container_name: gerenciadorlivraria-redis
+    image: redis:7-alpine
     ports:
       - "6379:6379"
+
+volumes:
+  sqlserver_data:
