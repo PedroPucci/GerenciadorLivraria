@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Serilog;
 
-namespace GerenciadorLivraria.Extensions
+namespace GerenciadorLivraria.Extensions.Middlewares
 {
     public class ExceptionMiddleware
     {

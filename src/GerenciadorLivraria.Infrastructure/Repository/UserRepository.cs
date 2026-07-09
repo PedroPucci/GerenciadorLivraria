@@ -1,4 +1,5 @@
 ﻿using GerenciadorLivraria.Domain.Entities;
+using GerenciadorLivraria.Domain.OperationResult;
 using GerenciadorLivraria.Infrastructure.Connections;
 using GerenciadorLivraria.Infrastructure.Repository.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -19,68 +20,142 @@ namespace GerenciadorLivraria.Infrastructure.Repository
             _userManager = userManager;
         }
 
-        public async Task<UserEntity> Add(UserEntity userEntity)
+        public async Task<Result<UserEntity>> Add(UserEntity userEntity)
         {
-            var result = await _userManager.CreateAsync(userEntity, userEntity.PasswordHash);
+            try
+            {
+                var result = await _userManager.CreateAsync(userEntity, userEntity.PasswordHash);
 
-            if (!result.Succeeded)
-                throw new InvalidOperationException(
-                    string.Join(" | ", result.Errors.Select(e => e.Description)));
-
-            return userEntity;
-        }
-
-        public async Task<bool> CheckPassword(UserEntity userEntity, string password)
-        {
-            var result = await _userManager.CheckPasswordAsync(userEntity, password);
-            return result;
-        }
-
-        public async Task<bool> Delete(string id)
-        {
-            var user = await GetByIdCheck(id);
-
-            if (user == null)
-                return false;
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
-
-        public async Task<List<UserEntity>> Get()
-        {
-            return await (
-                from user in _context.Users.AsNoTracking()
-                join userRole in _context.UserRoles.AsNoTracking()
-                    on user.Id equals userRole.UserId
-                join role in _context.Roles.AsNoTracking()
-                    on userRole.RoleId equals role.Id
-                orderby user.Id
-                select new UserEntity
+                if (!result.Succeeded)
                 {
-                    Email = user.Email,
-                    Name = user.Name,
-                    IsActive = user.IsActive
+                    return Result<UserEntity>.Error(
+                        string.Join(" | ", result.Errors.Select(e => e.Description)));
                 }
-            ).ToListAsync();
+
+                return Result<UserEntity>.Ok(
+                    "User created successfully.",
+                    userEntity);
+            }
+            catch (Exception ex)
+            {
+                return Result<UserEntity>.Error(ex.Message);
+            }
         }
 
-        public async Task<UserEntity> GetByEmail(string email)
+        public async Task<Result<bool>> CheckPassword(UserEntity userEntity, string password)
         {
-            var result = await _userManager.FindByEmailAsync(email);
-            return result;
+            try
+            {
+                var result = await _userManager.CheckPasswordAsync(userEntity, password);
+
+                if (!result)
+                    return Result<bool>.Error("Invalid password.");
+
+                return Result<bool>.Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return Result<bool>.Error(ex.Message);
+            }
         }
 
-        public async Task<UserEntity?> GetByIdCheck(string id)
+        public async Task<Result<bool>> Delete(string id)
         {
-            return await _context.Users.FindAsync(id);
+            try
+            {
+                var result = await GetByIdCheck(id);
+
+                if (!result.Success || result.Data == null)
+                    return Result<bool>.Error("User not found.");
+
+                _context.Users.Remove(result.Data);
+                await _context.SaveChangesAsync();
+
+                return Result<bool>.Ok(
+                    responseMessage: "User deleted successfully.",
+                    responseData: true);
+            }
+            catch (Exception ex)
+            {
+                return Result<bool>.Error(ex.Message);
+            }
         }
 
-        public UserEntity Update(UserEntity userEntity)
+        public async Task<Result<List<UserEntity>>> Get()
         {
-            return _context.Users.Update(userEntity).Entity;
+            try
+            {
+                var users = await (
+                    from user in _context.Users.AsNoTracking()
+                    join userRole in _context.UserRoles.AsNoTracking()
+                        on user.Id equals userRole.UserId
+                    join role in _context.Roles.AsNoTracking()
+                        on userRole.RoleId equals role.Id
+                    orderby user.Id
+                    select new UserEntity
+                    {
+                        Email = user.Email,
+                        Name = user.Name,
+                        IsActive = user.IsActive
+                    }
+                ).ToListAsync();
+
+                return Result<List<UserEntity>>.Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return Result<List<UserEntity>>.Error(ex.Message);
+            }
+        }
+
+        public async Task<Result<UserEntity>> GetByEmail(string email)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+
+                if (user == null)
+                    return Result<UserEntity>.Error("Usuário não encontrado.");
+
+                return Result<UserEntity>.Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return Result<UserEntity>.Error($"Erro ao buscar usuário: {ex.Message}");
+            }
+        }
+
+        public async Task<Result<UserEntity>> GetByIdCheck(string id)
+        {
+            try
+            {
+                var user = await _context.Users.FindAsync(id);
+
+                if (user == null)
+                    return Result<UserEntity>.Error("User not found.");
+
+                return Result<UserEntity>.Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return Result<UserEntity>.Error(ex.Message);
+            }
+        }
+
+        public Result<UserEntity> Update(UserEntity userEntity)
+        {
+            try
+            {
+                var user = _context.Users.Update(userEntity).Entity;
+
+                return Result<UserEntity>.Ok(
+                    "User updated successfully.",
+                    user);
+            }
+            catch (Exception ex)
+            {
+                return Result<UserEntity>.Error(ex.Message);
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace GerenciadorLivraria.Extensions
+namespace GerenciadorLivraria.Extensions.Configuration
 {
     public static class ApplicationServiceExtensions
     {
