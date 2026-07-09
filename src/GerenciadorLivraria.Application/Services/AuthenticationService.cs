@@ -28,7 +28,8 @@ namespace GerenciadorLivraria.Application.Services
 
         public async Task<Result<string>> Login(UserForAuthenticationDTO userEntity)
         {
-            if (string.IsNullOrWhiteSpace(userEntity.Email) || string.IsNullOrWhiteSpace(userEntity.Password))
+            if (string.IsNullOrWhiteSpace(userEntity.Email) ||
+                string.IsNullOrWhiteSpace(userEntity.Password))
             {
                 Log.Warning(LogMessages.InvalidLoginInputs());
                 return Result<string>.Error("Email and password are required.");
@@ -36,22 +37,25 @@ namespace GerenciadorLivraria.Application.Services
 
             var response = await _repositoryUoW.UserRepository.GetByEmail(userEntity.Email);
 
-            if (response is null)
+            if (!response.Success || response.Data == null)
             {
                 Log.Warning(LogMessages.InvalidLoginInputs());
                 return Result<string>.Error("Invalid email or password.");
             }
 
-            var isPasswordValid = await _repositoryUoW.UserRepository.CheckPassword(response, userEntity.Password);
+            var isPasswordValid = await _repositoryUoW.UserRepository
+                .CheckPassword(response.Data, userEntity.Password);
 
-            if (!isPasswordValid)
+            if (!isPasswordValid.Success || !isPasswordValid.Data)
             {
                 Log.Warning(LogMessages.InvalidUserInputs());
                 return Result<string>.Error("Invalid email or password.");
             }
 
-            var token = await CreateAccessTokenAsync(response);
-            Log.Information(LogMessages.LoginUserSuccess(response));
+            var token = await CreateAccessTokenAsync(response.Data);
+
+            Log.Information(LogMessages.LoginUserSuccess(response.Data));
+
             return Result<string>.Ok(token);
         }
 

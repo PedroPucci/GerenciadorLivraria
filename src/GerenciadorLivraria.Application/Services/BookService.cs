@@ -99,50 +99,6 @@ namespace GerenciadorLivraria.Application.Services
             throw new NotImplementedException();
         }
 
-        //public async Task<List<BookEntity>> Get(int page, int size)
-        //{
-        //    var cacheKey = CacheKeys.BooksAll(page, size);
-
-        //    var cachedBooks = await _cacheService
-        //        .GetAsync<List<BookEntity>>(cacheKey);
-
-        //    if (cachedBooks is not null)
-        //    {
-        //        Log.Information("Books loaded from Redis cache.");
-        //        return cachedBooks;
-        //    }
-
-        //    using var transaction = _repositoryUoW.BeginTransaction();
-
-        //    try
-        //    {
-        //        List<BookEntity> bookEntities = await _repositoryUoW
-        //            .BookRepository
-        //            .Get(page, size);
-
-        //        _repositoryUoW.Commit();
-
-        //        await _cacheService.SetAsync(
-        //            cacheKey,
-        //            bookEntities,
-        //            TimeSpan.FromMinutes(5));
-
-        //        Log.Information(LogMessages.GetAllBooksSuccess());
-
-        //        return bookEntities;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        transaction.Rollback();
-
-        //        Log.Error(LogMessages.GetAllBooksError(ex));
-
-        //        throw new InvalidOperationException(
-        //            "Error to loading the list Book. See logs for details.",
-        //            ex);
-        //    }
-        //}
-
         public async Task<List<BookEntity>> Get(int page, int size)
         {
             var cacheKey = CacheKeys.BooksAll(page, size);
@@ -158,26 +114,27 @@ namespace GerenciadorLivraria.Application.Services
 
             try
             {
-                var bookEntities = await _repositoryUoW
+                var result = await _repositoryUoW
                     .BookRepository
                     .Get(page, size);
 
+                if (!result.Success || result.Data == null)
+                    throw new InvalidOperationException(result.Message);
+
                 await _cacheService.SetAsync(
                     cacheKey,
-                    bookEntities,
+                    result.Data,
                     TimeSpan.FromMinutes(5));
 
                 Log.Information(LogMessages.GetAllBooksSuccess());
 
-                return bookEntities;
+                return result.Data;
             }
             catch (Exception ex)
             {
                 Log.Error(LogMessages.GetAllBooksError(ex));
 
-                throw new InvalidOperationException(
-                    "Error to loading the list Book. See logs for details.",
-                    ex);
+                throw new InvalidOperationException("Error to loading the list Book. See logs for details.", ex);
             }
         }
 
@@ -192,13 +149,15 @@ namespace GerenciadorLivraria.Application.Services
 
             try
             {
-                var book = await _repositoryUoW.BookRepository.GetById(id);
+                var bookResult = await _repositoryUoW.BookRepository.GetById(id);
 
-                if (book is null)
+                if (!bookResult.Success || bookResult.Data == null)
                 {
                     Log.Information("Book not found.");
                     return Result<BookEntity>.Error("Book not found.");
                 }
+
+                var book = bookResult.Data;
 
                 if (!book.IsActive)
                 {
@@ -218,17 +177,23 @@ namespace GerenciadorLivraria.Application.Services
             catch (Exception ex)
             {
                 Log.Error(LogMessages.GetBookByIdError(ex));
-                throw new InvalidOperationException("Error retrieving the book. See inner exception for details.", ex);
+
+                throw new InvalidOperationException(
+                    "Error retrieving the book. See inner exception for details.",
+                    ex);
             }
         }
 
         public async Task<Result<BookEntity>> GetByName(string name)
         {
-            using var transaction = _repositoryUoW.BeginTransaction();
-
             try
             {
-                var book = await _repositoryUoW.BookRepository.GetByName(name);
+                var bookResult = await _repositoryUoW.BookRepository.GetByName(name);
+
+                if (!bookResult.Success || bookResult.Data == null)
+                    return Result<BookEntity>.Error("Book not found.");
+
+                var book = bookResult.Data;
 
                 var bookEntity = new BookEntity
                 {
@@ -240,23 +205,28 @@ namespace GerenciadorLivraria.Application.Services
                     IsActive = book.IsActive,
                 };
 
-                var isActiveBook = await _repositoryUoW.BookRepository.GetIsActiveByTitle(bookEntity.Title);
-                if (isActiveBook)
+                var isActiveBookResult = await _repositoryUoW.BookRepository
+                    .GetIsActiveByTitle(bookEntity.Title);
+
+                if (!isActiveBookResult.Success)
+                    return Result<BookEntity>.Error(isActiveBookResult.Message);
+
+                if (isActiveBookResult.Data)
                 {
                     Log.Information(LogMessages.BookAlreadyActiveError(bookEntity.Title));
                     return Result<BookEntity>.Error("A book with the same title is already active.");
                 }
 
-                _repositoryUoW.Commit();
-
                 Log.Information(LogMessages.GetBookByIdSuccess(bookEntity));
+
                 return Result<BookEntity>.Ok(bookEntity);
             }
             catch (Exception ex)
             {
-                transaction.Rollback();
                 Log.Error(LogMessages.GetBookByIdError(ex));
-                throw new InvalidOperationException("Error retrieving the book. See inner exception for details.", ex);
+
+                return Result<BookEntity>.Error(
+                    "Error retrieving the book. See inner exception for details.");
             }
         }
 

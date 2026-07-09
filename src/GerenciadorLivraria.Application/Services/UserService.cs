@@ -98,91 +98,97 @@ namespace GerenciadorLivraria.Application.Services
 
             try
             {
-                var user = await _repositoryUoW.UserRepository.GetByIdCheck(id);
+                var userResult = await _repositoryUoW.UserRepository.GetByIdCheck(id);
 
-                if (user is null)
+                if (!userResult.Success || userResult.Data == null)
                 {
-                    transaction.Rollback();
-
                     var message = LogMessages.CannotPerformActionOnUser("retrieve", id);
                     Log.Error(message);
 
                     return Result<bool>.Error(message);
                 }
 
+                var user = userResult.Data;
+
                 user.IsActive = false;
                 user.ModificationDate = DateTime.UtcNow;
 
                 _repositoryUoW.UserRepository.Update(user);
+
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
 
                 Log.Information(LogMessages.DeleteUserSuccess(user));
-                return Result<bool>.Ok();
+
+                return Result<bool>.Ok(true);
             }
             catch (Exception ex)
             {
                 transaction.Rollback();
+
                 Log.Error(LogMessages.DeleteUserError(ex));
-                throw new InvalidOperationException($"Failed to delete user with id {id}. See logs for details.", ex);
+
+                throw new InvalidOperationException(
+                    $"Failed to delete user with id {id}. See logs for details.",
+                    ex);
             }
         }
 
         public async Task<List<UserEntity>> Get()
         {
-            using var transaction = _repositoryUoW.BeginTransaction();
-
             try
             {
-                List<UserEntity> userEntities = await _repositoryUoW.UserRepository.Get();
-                _repositoryUoW.Commit();
+                var result = await _repositoryUoW.UserRepository.Get();
+
+                if (!result.Success || result.Data == null)
+                    return new List<UserEntity>();
 
                 Log.Information(LogMessages.GetAllUsersSuccess());
-                return userEntities;
+
+                return result.Data;
             }
             catch (Exception ex)
             {
-                transaction.Rollback();
                 Log.Error(LogMessages.GetAllUsersError(ex));
+
                 throw new InvalidOperationException("Error to loading the list User. See logs for details.", ex);
             }
         }
 
         public async Task<Result<UserResponseDto>> GetById(string id)
         {
-            using var transaction = _repositoryUoW.BeginTransaction();
-
             try
             {
-                var user = await _repositoryUoW.UserRepository.GetByIdCheck(id);
+                var userResult = await _repositoryUoW.UserRepository.GetByIdCheck(id);
 
-                if (user is null)
+                if (!userResult.Success || userResult.Data == null)
                 {
-                    transaction.Rollback();
-
                     var message = LogMessages.CannotPerformActionOnUser("retrieve", id);
                     Log.Error(message);
 
                     return Result<UserResponseDto>.Error(message);
                 }
 
+                var user = userResult.Data;
+
                 var userResponse = new UserResponseDto
                 {
-                    Email = user?.Email,
-                    Name = user?.Name,
-                    IsActive = user?.IsActive ?? false
+                    Email = user.Email,
+                    Name = user.Name,
+                    IsActive = user.IsActive
                 };
 
-                _repositoryUoW.Commit();
-
                 Log.Information(LogMessages.GetUserByIdSuccess(user));
+
                 return Result<UserResponseDto>.Ok(userResponse);
             }
             catch (Exception ex)
             {
-                transaction.Rollback();
                 Log.Error(LogMessages.GetUserByIdError(ex));
-                throw new InvalidOperationException("Error retrieving the user. See inner exception for details.", ex);
+
+                throw new InvalidOperationException(
+                    "Error retrieving the user. See inner exception for details.",
+                    ex);
             }
         }
 
@@ -192,14 +198,16 @@ namespace GerenciadorLivraria.Application.Services
 
             try
             {
-                var user = await _repositoryUoW.UserRepository.GetByIdCheck(id);
+                var userResult = await _repositoryUoW.UserRepository.GetByIdCheck(id);
 
-                if (user is null)
+                if (!userResult.Success || userResult.Data == null)
                 {
                     var message = LogMessages.CannotPerformActionOnUser("update", id);
                     Log.Error(message);
                     return Result<bool>.Error(message);
                 }
+
+                var user = userResult.Data;
 
                 user.Email = updateUserRequestDto.Email;
                 user.Name = updateUserRequestDto.Name;
@@ -207,17 +215,23 @@ namespace GerenciadorLivraria.Application.Services
                 user.ModificationDate = DateTime.UtcNow;
 
                 _repositoryUoW.UserRepository.Update(user);
+
                 await _repositoryUoW.SaveAsync();
                 await transaction.CommitAsync();
 
                 Log.Information(LogMessages.UpdateUserSuccess(user));
+
                 return Result<bool>.Ok(true);
             }
             catch (Exception ex)
             {
                 transaction.Rollback();
+
                 Log.Error(LogMessages.UpdateUserError(ex));
-                throw new InvalidOperationException($"Failed to update user with id. See logs for details.", ex);
+
+                throw new InvalidOperationException(
+                    "Failed to update user with id. See logs for details.",
+                    ex);
             }
         }
 
