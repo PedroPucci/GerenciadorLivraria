@@ -1,18 +1,19 @@
 ﻿using GerenciadorLivraria.Domain.Entities;
+using GerenciadorLivraria.Domain.OperationResult;
 
 namespace GerenciadorLivraria.Application.Abstractions.Repositories
 {
     public interface IBookRepository
     {
-        Task<BookEntity> Add(BookEntity bookEntity);
-        BookEntity Update(BookEntity bookEntity);
-        Task<bool> Delete(Guid id);
-        Task<List<BookEntity>> GetAll();
-        Task<List<BookEntity>> Get(int page, int size);
-        Task<BookEntity?> GetById(Guid id);
-        Task<BookEntity?> GetByName(string name);
-        Task<BookEntity?> GetByTitleAndAuthor(string title, string author);
-        Task<BookEntity?> GetByIsbn(string isbn);
-        Task<bool> GetIsActiveByTitle(string title);
+        Task<Result<BookEntity>> Add(BookEntity bookEntity);
+        Result<BookEntity> Update(BookEntity bookEntity);
+        Task<Result<bool>> Delete(Guid id);
+        Task<Result<List<BookEntity>>> GetAll();
+        Task<Result<List<BookEntity>>> Get(int page, int size);
+        Task<Result<BookEntity>> GetById(Guid id);
+        Task<Result<BookEntity>> GetByName(string name);
+        Task<Result<BookEntity>> GetByTitleAndAuthor(string title, string author);
+        Task<Result<BookEntity>> GetByIsbn(string isbn);
+        Task<Result<bool>> GetIsActiveByTitle(string title);
     }
 }
